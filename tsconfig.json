@@ -1,0 +1,11 @@
+{
+  "extends": "./.wxt/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "types": ["vitest/globals", "node", "chrome"]
+  },
+  "include": ["**/*.ts", "**/*.tsx", ".wxt/**/*", "tests/**/*"]
+}

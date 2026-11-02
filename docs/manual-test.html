@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page2Data manual test page</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+        color: #0f172a;
+        background: #f8fafc;
+      }
+      body {
+        margin: 0;
+        padding: 32px 24px 80px;
+      }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+      }
+      h1 {
+        margin: 0 0 4px;
+        font-size: 28px;
+      }
+      h2 {
+        margin: 40px 0 8px;
+        font-size: 18px;
+      }
+      .intro {
+        margin: 0 0 24px;
+        color: #475569;
+        line-height: 1.6;
+      }
+      .box {
+        border: 1px solid #e2e8f0;
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin: 16px 0;
+      }
+      .box h3 {
+        margin: 0 0 8px;
+        font-size: 14px;
+      }
+      .box ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #475569;
+        line-height: 1.7;
+        font-size: 14px;
+      }
+      code {
+        background: #f1f5f9;
+        border-radius: 4px;
+        padding: 1px 5px;
+        font-size: 0.9em;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 8px 0 4px;
+        font-size: 13px;
+      }
+      caption {
+        text-align: left;
+        font-weight: 600;
+        padding: 0 0 8px;
+        color: #334155;
+      }
+      th,
+      td {
+        border: 1px solid #cbd5e1;
+        padding: 6px 9px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: #f1f5f9;
+        font-weight: 600;
+      }
+      tbody tr:nth-child(even) td {
+        background: #fafcff;
+      }
+      note {
+        display: block;
+        margin-top: 4px;
+        color: #64748b;
+        font-size: 12px;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      button {
+        border: 1px solid #c7d2fe;
+        background: #eef2ff;
+        color: #3730a3;
+        border-radius: 8px;
+        padding: 7px 12px;
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #e0e7ff;
+      }
+      .excluded {
+        opacity: 0.55;
+      }
+      .muted {
+        color: #64748b;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Page2Data manual test page</h1>
+      <p class="intro">
+        Open this page in Chrome or Edge, then open Page2Data in the side panel. This page contains
+        deliberately awkward tables. Expected results are listed in the blue box on each section.
+      </p>
+
+      <div class="box">
+        <h3>Before you start</h3>
+        <ul>
+          <li>Run <code>npm run build</code> and load <code>.output/chrome-mv3</code> unpacked.</li>
+          <li>Click the Page2Data toolbar icon while this page is active.</li>
+          <li>The initial scan should report <strong>8 tables</strong>. The presentation and aria-hidden tables must be excluded.</li>
+          <li>All data rows stay as text. Cleaning changes column metadata, not the raw values.</li>
+        </ul>
+      </div>
+
+      <h2>1. Basic data, duplicates, and missing values</h2>
+      <div class="box">
+        <h3>Expected</h3>
+        <ul>
+          <li>Caption: <strong>Orders — basic dataset</strong>; 7 rows, 7 columns.</li>
+          <li>Duplicate row: two identical <code>A-1002 / Beta LLC</code> rows. Removing duplicates keeps the first and leaves 6 rows.</li>
+          <li>Missing values: 3 blank cells (two Rating, one Notes).</li>
+          <li>CSV must quote <code>Widget, large</code>, <code>Gadget "Pro"</code>, and <code>Monitor, 27"</code>.</li>
+        </ul>
+      </div>
+      <table id="orders">
+        <caption>Orders — basic dataset</caption>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Rating</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="orders-body">
+          <tr>
+            <td>A-1001</td>
+            <td>  Acme Corp  </td>
+            <td>Widget, large</td>
+            <td>2</td>
+            <td>19.99</td>
+            <td>4.5</td>
+            <td>Repeat customer</td>
+          </tr>
+          <tr>
+            <td>A-1002</td>
+            <td>Beta LLC</td>
+            <td>Gadget "Pro"</td>
+            <td>1</td>
+            <td>249.00</td>
+            <td></td>
+            <td>Needs follow-up</td>
+          </tr>
+          <tr>
+            <td>A-1002</td>
+            <td>Beta LLC</td>
+            <td>Gadget "Pro"</td>
+            <td>1</td>
+            <td>249.00</td>
+            <td></td>
+            <td>Needs follow-up</td>
+          </tr>
+          <tr>
+            <td>A-1003</td>
+            <td>Gamma Inc</td>
+            <td>Widget</td>
+            <td>10</td>
+            <td>19.99</td>
+            <td>3.8</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>A-1004</td>
+            <td>Delta</td>
+            <td>Cable</td>
+            <td>3</td>
+            <td>5.00</td>
+            <td>5.0</td>
+            <td>Bulk order</td>
+          </tr>
+          <tr>
+            <td>A-1005</td>
+            <td>Epsilon</td>
+            <td>Monitor, 27"</td>
+            <td>4</td>
+            <td>199.50</td>
+            <td>4.2</td>
+            <td>Fragile</td>
+          </tr>
+          <tr>
+            <td>A-1006</td>
+            <td>Zeta</td>
+            <td>Adapter</td>
+            <td>6</td>
+            <td>12.00</td>
+            <td>4.0</td>
+            <td>Customer ID 007</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="actions">
+        <button type="button" id="add-rows">Add 2 rows after scanning (then Rescan)</button>
+        <button type="button" id="add-many-rows">Add 20 rows (AI prompt cap test)</button>
+      </div>
+      <note>
+        After adding rows, rescan and expect Orders to have 9 rows (or 27 after the 20-row button). With
+        27 rows, the AI prompt inspector must still show only 20 sample rows.
+      </note>
+
+      <h2>2. Merged header cells and rowspan</h2>
+      <div class="box">
+        <h3>Expected</h3>
+        <ul>
+          <li>Caption: <strong>Regional sales — merged headers</strong>; 4 rows, 5 columns.</li>
+          <li>Headers: <code>Region</code>, <code>Store</code>, <code>Sales / Q1</code>, <code>Sales / Q2</code>, <code>Notes</code>.</li>
+          <li>Region is repeated for each store: North, North, South, South.</li>
+        </ul>
+      </div>
+      <table id="regional-sales">
+        <caption>Regional sales — merged headers</caption>
+        <thead>
+          <tr>
+            <th rowspan="2">Region</th>
+            <th rowspan="2">Store</th>
+            <th colspan="2">Sales</th>
+            <th rowspan="2">Notes</th>
+          </tr>
+          <tr>
+            <th>Q1</th>
+            <th>Q2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">North</td>
+            <td>Portland</td>
+            <td>1200</td>
+            <td>1350</td>
+            <td>Steady</td>
+          </tr>
+          <tr>
+            <td>Seattle</td>
+            <td>900</td>
+            <td>1100</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td rowspan="2">South</td>
+            <td>Austin</td>
+            <td>1500</td>
+            <td>1600</td>
+            <td>New</td>
+          </tr>
+          <tr>
+            <td>Miami</td>
+            <td>700</td>
+            <td>850</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. No thead: header override</h2>
+      <div class="box">
+        <h3>Expected</h3>
+        <ul>
+          <li>Header detection reports no header row, so the first row appears as data.</li>
+          <li>Check <strong>First row contains column names</strong> before extracting.</li>
+          <li>Result: 3 data rows with headers <code>City</code>, <code>Population</code>, <code>Year</code>.</li>
+        </ul>
+      </div>
+      <table id="cities">
+        <caption>Cities without a thead</caption>
+        <tbody>
+          <tr>
+            <td><strong>City</strong></td>
+            <td><strong>Population</strong></td>
+            <td><strong>Year</strong></td>
+          </tr>
+          <tr>
+            <td>Lisbon</td>
+            <td>545000</td>
+            <td>2021</td>
+          </tr>
+          <tr>
+            <td>Porto</td>
+            <td>231800</td>
+            <td>2021</td>
+          </tr>
+          <tr>
+            <td>Braga</td>
+            <td>193333</td>
+            <td>2021</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>4. Duplicate column names</h2>
+      <div class="box">
+        <h3>Expected</h3>
+        <ul>
+          <li>Extracted names: <code>Price</code>, <code>Price (2)</code>, <code>Price ($)</code>.</li>
+          <li>Renaming or standardizing names must never collapse the three columns.</li>
+        </ul>
+      </div>
+      <table id="duplicate-names">
+        <caption>Duplicate column names</caption>
+        <thead>
+          <tr>
+            <th>Price</th>
+            <th>Price</th>
+            <th>Price ($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>10</td>
+            <td>12</td>
+            <td>10.00</td>
+          </tr>
+          <tr>
+            <td>20</td>
+            <td>24</td>
+            <td>20.00</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>5. Type inference</h2>
+      <div class="box">
+        <h3>Expected after Clean → Apply types</h3>
+        <ul>
+          <li>Integer → <strong>Integer</strong>; Decimal, EN thousands, ID thousands, Currency → <strong>Number</strong>.</li>
+          <li>Date → <strong>Date</strong>; Boolean → <strong>Boolean</strong>; Empty → <strong>Empty</strong>; Mixed → <strong>Text</strong>.</li>
+          <li>Leading zero and Phone → <strong>Text</strong> (identifiers must not lose zeros).</li>
+          <li><code>1.234.567</code> is treated as 1234567 and <code>1.234</code> as 1234 — a documented thousands-separator heuristic.</li>
+        </ul>
+      </div>
+      <table id="types">
+        <caption>Type inference samples</caption>
+        <thead>
+          <tr>
+            <th>Label</th>
+            <th>Integer</th>
+            <th>Decimal</th>
+            <th>EN thousands</th>
+            <th>ID thousands</th>
+            <th>Currency</th>
+            <th>Date</th>
+            <th>Boolean</th>
+            <th>Leading zero</th>
+            <th>Phone</th>
+            <th>Empty</th>
+            <th>Mixed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>sample</td>
+            <td>42</td>
+            <td>3.14</td>
+            <td>18,999,000</td>
+            <td>1.234.567</td>
+            <td>$1,299.00</td>
+            <td>2026-03-14</td>
+            <td>yes</td>
+            <td>007</td>
+            <td>+1 555 0100</td>
+            <td></td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>sample 2</td>
+            <td>-7</td>
+            <td>0.5</td>
+            <td>1,000</td>
+            <td>2.000</td>
+            <td>€49.99</td>
+            <td>03/14/2026</td>
+            <td>false</td>
+            <td>0042</td>
+            <td>08123456789</td>
+            <td></td>
+            <td>n/a</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>6. Layout and hidden tables</h2>
+      <div class="box">
+        <h3>Expected</h3>
+        <ul>
+          <li>The 1×1 spacer table is included but marked <strong>layout?</strong> and ranked last.</li>
+          <li>The nested table is marked <strong>nested</strong>.</li>
+          <li>The <code>role="presentation"</code> and <code>aria-hidden="true"</code> tables must not appear at all.</li>
+          <li>Total scan count remains <strong>8 tables</strong>.</li>
+        </ul>
+      </div>
+      <table id="spacer">
+        <caption>Spacer</caption>
+        <tr>
+          <td>Spacer</td>
+        </tr>
+      </table>
+
+      <table id="outer-nested">
+        <caption>Outer table with nested table</caption>
+        <tr>
+          <th>Outer A</th>
+          <th>Outer B</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>
+            2
+            <table id="inner-nested">
+              <caption>Inner nested table</caption>
+              <tr>
+                <th>Inner X</th>
+                <th>Inner Y</th>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>4</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" class="excluded">
+        <tr>
+          <td>Presentation table</td>
+          <td>Must be ignored</td>
+        </tr>
+      </table>
+
+      <div aria-hidden="true" class="excluded">
+        <table>
+          <tr>
+            <td>Aria-hidden table</td>
+            <td>Must be ignored</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="box" style="margin-top: 40px">
+        <h3>Other checks worth doing</h3>
+        <ul>
+          <li>Open <code>chrome://extensions</code> in the panel: it must show a friendly restricted-page error, not crash.</li>
+          <li>Reload the test page after installing the extension, then scan — this exercises the injection fallback for already-open tabs.</li>
+          <li>Close and reopen the side panel, then reload the browser: saved datasets must still be listed.</li>
+          <li>Inspect <code>chrome://extensions</code> → Page2Data → service worker / side panel DevTools to confirm no network requests happen while AI is disabled.</li>
+        </ul>
+      </div>
+    </main>
+
+    <script>
+      const ordersBody = document.getElementById('orders-body');
+
+      function appendRows(rows) {
+        for (const values of rows) {
+          const tr = document.createElement('tr');
+          for (const value of values) {
+            const td = document.createElement('td');
+            td.textContent = value;
+            tr.appendChild(td);
+          }
+          ordersBody.appendChild(tr);
+        }
+      }
+
+      document.getElementById('add-rows').addEventListener('click', (event) => {
+        appendRows([
+          ['A-1007', 'Eta', 'Keyboard', '2', '89.00', '4.6', 'Added after scan'],
+          ['A-1008', 'Theta', 'Mouse pad', '5', '9.50', '4.1', 'Added after scan'],
+        ]);
+        event.currentTarget.textContent = '2 rows added — click Rescan in Page2Data';
+      });
+
+      document.getElementById('add-many-rows').addEventListener('click', (event) => {
+        const rows = Array.from({ length: 20 }, (_, index) => [
+          `A-20${String(index + 1).padStart(2, '0')}`,
+          `Bulk customer ${index + 1}`,
+          `Bulk item ${index + 1}`,
+          String((index % 5) + 1),
+          (10 + index).toFixed(2),
+          ((index % 5) + 3).toFixed(1),
+          'AI prompt cap sample',
+        ]);
+        appendRows(rows);
+        event.currentTarget.textContent = '20 rows added — click Rescan in Page2Data';
+      });
+    </script>
+  </body>
+</html>
